@@ -2,5 +2,4 @@
 use warnings;
 use strict;
 
-print("Hello there world");
-#system("");
+system("/home/taztwister/Documents/EVL/LinSound/SoundClient");
