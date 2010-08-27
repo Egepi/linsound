@@ -76,8 +76,8 @@ void makeConnection() {
         struct hostent *host;
         struct sockaddr_in server_addr;  
 		
-	   host = gethostbyname("127.0.0.1");
-        //host = gethostbyname("131.193.79.160");
+	//host = gethostbyname("127.0.0.1");
+        host = gethostbyname("131.193.79.160");
 
         if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         	perror("Socket");
