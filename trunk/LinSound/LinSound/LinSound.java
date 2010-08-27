@@ -1,14 +1,12 @@
 package LinSound;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import processing.core.*;
 
 public class LinSound {
-	
-	Runtime a = Runtime.getRuntime();
-	a.exec("picassa.exe");
 	
 	PApplet parent;
 	private PrintWriter outToClient = null;
@@ -19,6 +17,29 @@ public class LinSound {
 	{
 		this.parent = parent;
 		parent.registerDispose(this);
+		this.createConnection();
+	}
+	
+	public void createConnection()
+	{
+		String OS = System.getProperty("os.name");
+		if(OS.substring(0,0).equalsIgnoreCase("w"))
+		{
+			//open("C:/Program Files/Google/Picasa3/Picasa3.exe");
+			try{
+				Runtime.getRuntime().exec("C:/Program Files/Google/Picasa3/Picasa3.exe");
+				}
+			catch(IOException e){}			
+		}
+		else
+		{
+			String[] theP = { "perl","/home/taztwister/Documents/irrK/irrKlang-1.3.0b/irrKlang-1.3.0/examples/SoundLib/launch.pl" };
+			try{
+				Runtime.getRuntime().exec(theP);
+				}
+			catch(IOException e){}	
+		}
+		
 		try {
 			Server = new ServerSocket (51000);
 			} catch(Exception e) {}
