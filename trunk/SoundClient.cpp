@@ -11,11 +11,11 @@
 #include <ik_ISoundEngine.h>
 #include <iostream>
 
-#if defined(WIN32)
-#include <conio.h>
-#else
-#include "../common/conio.h"
-#endif
+//#if defined(WIN32)
+//#include <conio.h>
+//#else
+//#include "../common/conio.h"
+//#endif
 
 
 using namespace irrklang;
