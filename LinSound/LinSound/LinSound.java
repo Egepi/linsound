@@ -7,7 +7,7 @@ import java.net.Socket;
 import processing.core.*;
 
 public class LinSound {
-	
+	//pointer to the processing applet
 	PApplet parent;
 	private PrintWriter outToClient = null;
 	private ServerSocket Server = null;
