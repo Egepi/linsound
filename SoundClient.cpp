@@ -50,20 +50,8 @@ int main(int argc, const char** argv)
         bytes_recieved=recv(sock,recv_data,1024,0);
         recv_data[bytes_recieved] = '\0';
 	   dataIn = recv_data;
+	   printf("the data in: %s\n", recv_data);
 	   selectAction(engine, dataIn);
-   
-        /*printf("\nSEND (q or Q to quit) : ");
-        gets(send_data);
-           
-        if (strcmp(send_data , "q") != 0 && strcmp(send_data , "Q") != 0)
-        	send(sock,send_data,strlen(send_data), 0); 
-
-        else
-        {
-        	send(sock,send_data,strlen(send_data), 0);   
-          close(sock);
-          break;
-        }*/
         
      }
 	engine->drop();
@@ -76,8 +64,8 @@ void makeConnection() {
         struct hostent *host;
         struct sockaddr_in server_addr;  
 		
-	//host = gethostbyname("127.0.0.1");
-        host = gethostbyname("131.193.79.160");
+	   host = gethostbyname("127.0.0.1");
+       // host = gethostbyname("131.193.79.160");
 
         if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         	perror("Socket");
@@ -117,9 +105,10 @@ void selectAction(ISoundEngine* e1, string theData) {
 }
 
 void createSound(char* fileName) {
+	printf("The filename: %s\n", fileName);
 	ISound* myNewSound = engine->play2D(fileName, false, false, true);
-	myNewSound->setIsLooped(true);
-	myNewSound->setIsPaused(false);
+	//myNewSound->setIsLooped(true);
+	//myNewSound->setIsPaused(false);
 	cout << "MY attemp: " << myNewSound->getSoundSource()->getName() << endl;	
 	//engine->play2D(myNewSound);
 }
