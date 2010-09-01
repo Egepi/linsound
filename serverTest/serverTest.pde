@@ -14,6 +14,6 @@ void draw() {
 
 void keyPressed() {
    LinSound myEngine = new LinSound(this);
-   Sounds newSound = new Sounds(myEngine, "fxnuabo.mp3");
+   MusicPlayer newSound = new MusicPlayer(myEngine, "bell.wav");
 }
-
+k
