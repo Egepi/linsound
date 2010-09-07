@@ -2,16 +2,14 @@ package LinSound;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import processing.core.*;
 
 public class LinSound {
 	//pointer to the processing applet
 	PApplet parent;
-	private PrintWriter outToClient = null;
-	private ServerSocket Server = null;
-	private Socket connected = null;
+	private PrintWriter outToServer = null;
+	private Socket clientSocket = null;
 	
 	public LinSound(PApplet parent) 
 	{
@@ -20,12 +18,12 @@ public class LinSound {
 		this.createConnection();
 	}
 	
+	@SuppressWarnings("unused")
 	public void createConnection()
 	{
 		String OS = System.getProperty("os.name");
 		if(OS.substring(0,0).equalsIgnoreCase("w"))
 		{
-			//open("C:/Program Files/Google/Picasa3/Picasa3.exe");
 			try{
 				Runtime.getRuntime().exec("C:/Program Files/Google/Picasa3/Picasa3.exe");
 				}
@@ -39,25 +37,23 @@ public class LinSound {
 				}
 			catch(IOException e){}	
 		}
-		
-		try {
-			Server = new ServerSocket (51000);
-			} catch(Exception e) {}
-		System.out.println ("TCPServer Waiting for client on port 51000");
-	     
-	    try {
-	    	connected = Server.accept();
-	    	outToClient = new PrintWriter(connected.getOutputStream(),true);
-	    	} catch(Exception e) {}
+        try {
+        	clientSocket = new Socket("localhost", 51000);
+            } catch(Exception e) {}
+        try {
+        	PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream(),true);
+            } catch(Exception e) {}    
+           
+        
 	}
 	public void stopEngine() 
 	{
 		String toclient = "drop\0";
-		outToClient.println(toclient);
+		outToServer.println(toclient);
 	}
 	 
-	public PrintWriter getToClient() {
-		return outToClient;
+	public PrintWriter getToServer() {
+		return outToServer;
 	}
 	
 	public String getSketchPath()
