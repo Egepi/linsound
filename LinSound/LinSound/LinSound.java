@@ -22,6 +22,7 @@ public class LinSound {
 	
 	public void createConnection()
 	{
+		/*
 		String OS = System.getProperty("os.name");
 		if(OS.substring(0,0).equalsIgnoreCase("w"))
 		{
@@ -37,7 +38,7 @@ public class LinSound {
 				Runtime.getRuntime().exec(theP);
 				}
 			catch(IOException e){}	
-		}
+		}*/
         try {
             Server = new ServerSocket (51000);
             } catch(Exception e) {}
