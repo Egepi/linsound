@@ -10,12 +10,15 @@
 #include <irrKlang.h>
 #include <ik_ISoundEngine.h>
 #include <iostream>
+#include <sys/uio.h>
+#include <sys/select.h>
+#include <sys/stat.h>
 
-//#if defined(WIN32)
-//#include <conio.h>
-//#else
-//#include "../common/conio.h"
-//#endif
+#if defined(WIN32)
+#include <conio.h>
+#else
+#include "conio.h"
+#endif
 
 
 using namespace irrklang;
@@ -28,6 +31,8 @@ int sock;
 void selectAction(ISoundEngine* e1, string);
 void makeConnection();
 void createSound(char*);
+
+int server_sock;
 
 int main(int argc, const char** argv)
 {
@@ -51,40 +56,60 @@ int main(int argc, const char** argv)
         recv_data[bytes_recieved] = '\0';
 	   dataIn = recv_data;
 	   printf("the data in: %s\n", recv_data);
-	   selectAction(engine, dataIn);
-        
+	   selectAction(engine, dataIn); 
      }
-	engine->drop();
-	return 0;
 }
 
+/************************************************************/
 //Sets up the connection to the java/processing application.
-void makeConnection() {
- 
-        struct hostent *host;
-        struct sockaddr_in server_addr;  
+void makeConnection() {	
+
+	server_sock = socket(AF_INET, SOCK_STREAM, 0);
+	if(server_sock < 0) {
+		perror("Creating socket failed: ");
+		exit(1);
+	}
+	
+	// allow fast reuse of ports 
+	int reuse_true = 1;
+	setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR, &reuse_true, sizeof(reuse_true));
+
+	struct sockaddr_in addr; 	// internet socket address data structure
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(51000); // byte order is significant
+	addr.sin_addr.s_addr = INADDR_ANY; // listen to all interfaces
+	
+	int res = bind(server_sock, (struct sockaddr*)&addr, sizeof(addr));
+	if(res < 0) {
+		perror("Error binding to port");
+		exit(1);
+	}
+
+	struct sockaddr_in remote_addr;
+	unsigned int socklen = sizeof(remote_addr); 
+
+	while(1) {
+		// wait for a connection
+		res = listen(server_sock,0);
+		if(res < 0) {
+			perror("Error listening for connection");
+			exit(1);
+		}
 		
-	   host = gethostbyname("127.0.0.1");
-       // host = gethostbyname("131.193.79.160");
+		int sock;
+		sock = accept(server_sock, (struct sockaddr*)&remote_addr, &socklen);
+		if(sock < 0) {
+			perror("Error accepting connection");
+			exit(1);
+		} else {
+			break;
+		}
+	}
 
-        if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
-        	perror("Socket");
-        	exit(1);
-        }
 
-        server_addr.sin_family = AF_INET;     
-        server_addr.sin_port = htons(51000);   
-        server_addr.sin_addr = *((struct in_addr *)host->h_addr);
-        bzero(&(server_addr.sin_zero),8); 
-
-        if (connect(sock, (struct sockaddr *)&server_addr,
-                    sizeof(struct sockaddr)) == -1) 
-        {
-            perror("Connect");
-            exit(1);
-        }
 }//End makeConnection()
 
+/************************************************************/
 void selectAction(ISoundEngine* e1, string theData) {
 	//Pull the action to be preformed out from the input string	
 	int thePos = theData.find_first_of("#");
@@ -99,16 +124,20 @@ void selectAction(ISoundEngine* e1, string theData) {
 		createSound(remainingChar);
 	} else if(theAction.compare("drop") == 0) {
 		cout << "good bye!\n";
+		shutdown(sock,SHUT_RDWR);
+		close(sock);
+		shutdown(server_sock,SHUT_RDWR);
 		engine->drop();
 		exit(0);
 	}
 }
 
+/************************************************************/
 void createSound(char* fileName) {
 	printf("The filename: %s\n", fileName);
-	ISound* myNewSound = engine->play2D(fileName, false, false, true);
+	ISound* myNewSound = engine->play2D(fileName, true, true, true, ESM_AUTO_DETECT,false);
 	//myNewSound->setIsLooped(true);
-	//myNewSound->setIsPaused(false);
+	myNewSound->setIsPaused(false);
 	cout << "MY attemp: " << myNewSound->getSoundSource()->getName() << endl;	
 	//engine->play2D(myNewSound);
 }
