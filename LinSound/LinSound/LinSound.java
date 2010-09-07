@@ -43,8 +43,7 @@ public class LinSound {
         try {
         	PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream(),true);
             } catch(Exception e) {}    
-           
-        
+
 	}
 	public void stopEngine() 
 	{
