@@ -2,14 +2,16 @@ package LinSound;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import processing.core.*;
 
 public class LinSound {
 	//pointer to the processing applet
 	PApplet parent;
-	private PrintWriter outToServer = null;
-	private Socket clientSocket = null;
+	private PrintWriter outToClient = null;
+    private ServerSocket Server = null;
+    private Socket connected = null;
 	
 	public LinSound(PApplet parent) 
 	{
@@ -18,7 +20,6 @@ public class LinSound {
 		this.createConnection();
 	}
 	
-	@SuppressWarnings("unused")
 	public void createConnection()
 	{
 		String OS = System.getProperty("os.name");
@@ -38,21 +39,24 @@ public class LinSound {
 			catch(IOException e){}	
 		}
         try {
-        	clientSocket = new Socket("localhost", 51000);
+            Server = new ServerSocket (51000);
             } catch(Exception e) {}
-        try {
-        	PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream(),true);
-            } catch(Exception e) {}    
+        System.out.println ("TCPServer Waiting for client on port 51000");
+ 
+    	try {
+    		connected = Server.accept();
+    		outToClient = new PrintWriter(connected.getOutputStream(),true);
+    		} catch(Exception e) {}  
 
 	}
 	public void stopEngine() 
 	{
 		String toclient = "drop\0";
-		outToServer.println(toclient);
+		outToClient.println(toclient);
 	}
 	 
 	public PrintWriter getToServer() {
-		return outToServer;
+		return outToClient;
 	}
 	
 	public String getSketchPath()
