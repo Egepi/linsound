@@ -14,17 +14,16 @@
 #include <sys/select.h>
 #include <sys/stat.h>
 
-#if defined(WIN32)
-#include <conio.h>
-#else
-#include "conio.h"
-#endif
+//#if defined(WIN32)
+//#include <conio.h>
+//#else
+//#include "conio.h"
+//#endif
 
 
 using namespace irrklang;
 using namespace std;
 ISoundEngine* engine;
-int sock;
 
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 
@@ -33,6 +32,7 @@ void makeConnection();
 void createSound(char*);
 
 int server_sock;
+int sock;
 
 int main(int argc, const char** argv)
 {
@@ -52,7 +52,9 @@ int main(int argc, const char** argv)
 
      while(1)
      {
+	   memset(&recv_data, 0, 1024);
         bytes_recieved=recv(sock,recv_data,1024,0);
+	   if(bytes_recieved == 0) { continue; }
         recv_data[bytes_recieved] = '\0';
 	   dataIn = recv_data;
 	   printf("the data in: %s\n", recv_data);
@@ -96,12 +98,12 @@ void makeConnection() {
 			exit(1);
 		}
 		
-		int sock;
 		sock = accept(server_sock, (struct sockaddr*)&remote_addr, &socklen);
 		if(sock < 0) {
 			perror("Error accepting connection");
 			exit(1);
 		} else {
+			cout << "Connection made...." << endl;
 			break;
 		}
 	}
