@@ -13,6 +13,13 @@ public class LinSound {
     private Socket connected = null;
     private int connectionPort = 51000;
 	
+	public LinSound(PApplet parent) 
+	{
+		this.parent = parent;
+		parent.registerDispose(this);
+		this.createConnection();
+	}
+
 	public LinSound(PApplet parent, int portNum) 
 	{
 		this.parent = parent;
@@ -43,7 +50,7 @@ public class LinSound {
         try {
             Server = new ServerSocket (connectionPort);
             } catch(Exception e) {}
-        System.out.println ("TCPServer Waiting for client on port " + connectionPort);
+        System.out.println ("LinSound waiting for client on port " + connectionPort);
  
     	try {
     		connected = Server.accept();
