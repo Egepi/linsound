@@ -37,7 +37,7 @@ int main(int argc, const char** argv)
 
 	// start the sound engine with default parameters
 	engine = createIrrKlangDevice();
-
+	cout << "made engine\n";
 	if (!engine) {
 		printf("Could not startup engine\n");
 		return 0; // error starting up the engine
@@ -60,29 +60,32 @@ int main(int argc, const char** argv)
 
 //Sets up the connection to the java/processing application.
 void makeConnection() {
- 
+	cout << "entering\n";
+       // host = gethostbyname("131.193.79.160");
         struct hostent *host;
         struct sockaddr_in server_addr;  
-		
-	   host = gethostbyname("127.0.0.1");
-       // host = gethostbyname("131.193.79.160");
-
+	cout << "getting host\n";
+        host = gethostbyname("127.0.0.1");
+	cout << "got host\n";
         if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
-        	perror("Socket");
-        	exit(1);
+            perror("Socket");
+            exit(1);
         }
 
         server_addr.sin_family = AF_INET;     
-        server_addr.sin_port = htons(51000);   
+        server_addr.sin_port = htons(6002);
+		cout << "afte naming port\n";   
         server_addr.sin_addr = *((struct in_addr *)host->h_addr);
         bzero(&(server_addr.sin_zero),8); 
-
+		cout << "connecting...\n";
         if (connect(sock, (struct sockaddr *)&server_addr,
                     sizeof(struct sockaddr)) == -1) 
         {
             perror("Connect");
             exit(1);
         }
+
+		cout << "i have connected\n";
 }//End makeConnection()
 
 void selectAction(ISoundEngine* e1, string theData) {
@@ -106,10 +109,9 @@ void selectAction(ISoundEngine* e1, string theData) {
 
 void createSound(char* fileName) {
 	printf("The filename: %s\n", fileName);
-	ISound* myNewSound = engine->play2D(fileName, false, false, true);
+	ISound* myNewSound = engine->play2D(fileName, true, true, true, ESM_AUTO_DETECT,false);
 	//myNewSound->setIsLooped(true);
-	//myNewSound->setIsPaused(false);
+	myNewSound->setIsPaused(false);
 	cout << "MY attemp: " << myNewSound->getSoundSource()->getName() << endl;	
 	//engine->play2D(myNewSound);
-}
 }
