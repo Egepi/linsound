@@ -38,7 +38,7 @@ public class LinSound {
 				}
 			catch(IOException e){}			
 		} else {
-			String libraryDirectory = System.getProperty("user.home") +"sketchbook/libraries/LinSound/library/";
+			String libraryDirectory = System.getProperty("user.home") +"/sketchbook/libraries/LinSound/library/";
 			String[] theP = {"xterm","-e","perl",libraryDirectory + "launch.pl", libraryDirectory};
 			System.out.println(libraryDirectory);
 			try {
