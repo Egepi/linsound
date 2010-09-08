@@ -1,5 +1,6 @@
 package LinSound;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -30,27 +31,26 @@ public class LinSound {
 	
 	public void createConnection()
 	{
-		/*
 		String OS = System.getProperty("os.name");
-		if(OS.substring(0,0).equalsIgnoreCase("w"))
-		{
-			try{
+		if(OS.substring(0,0).equalsIgnoreCase("w")) {
+			try {
 				Runtime.getRuntime().exec("C:/Program Files/Google/Picasa3/Picasa3.exe");
 				}
 			catch(IOException e){}			
-		}
-		else
-		{
-			String[] theP = { "perl","/home/taztwister/Documents/irrK/irrKlang-1.3.0b/irrKlang-1.3.0/examples/SoundLib/launch.pl" };
-			try{
+		} else {
+			String libraryDirectory = System.getProperty("user.home") +"sketchbook/libraries/LinSound/library/";
+			String[] theP = {"xterm","-e","perl",libraryDirectory + "launch.pl", libraryDirectory};
+			System.out.println(libraryDirectory);
+			try {
 				Runtime.getRuntime().exec(theP);
 				}
 			catch(IOException e){}	
-		}*/
+		}
+		
         try {
             Server = new ServerSocket (connectionPort);
             } catch(Exception e) {}
-        System.out.println ("LinSound waiting for client on port " + connectionPort);
+        System.out.println("LinSound waiting for client on port " + connectionPort);
  
     	try {
     		connected = Server.accept();
