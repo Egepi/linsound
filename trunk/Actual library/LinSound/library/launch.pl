@@ -2,6 +2,9 @@
 use warnings;
 use strict;
 
+my $thePath = $ARGV[1];
+print("$thePath");
+
 sleep(1);
-chdir("/home/taztwister/Documents/EVL/Lin/trunk");
+chdir("$thePath");
 system("xterm -C -e ./SoundClient");
