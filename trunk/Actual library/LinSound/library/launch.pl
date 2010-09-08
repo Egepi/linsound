@@ -2,9 +2,9 @@
 use warnings;
 use strict;
 
-my $thePath = $ARGV[1];
+my $thePath = $ARGV[0];
 print("$thePath");
 
 sleep(1);
 chdir("$thePath");
-system("xterm -C -e ./SoundClient");
+system("xterm -hold -C -e ./SoundClient");
