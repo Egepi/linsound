@@ -1,6 +1,5 @@
 package LinSound;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,14 +7,16 @@ import processing.core.*;
 
 public class LinSound {
 	//pointer to the processing applet
-	PApplet parent;
+	private PApplet parent;
 	private PrintWriter outToClient = null;
     private ServerSocket Server = null;
     private Socket connected = null;
+    private int connectionPort = 51000;
 	
-	public LinSound(PApplet parent) 
+	public LinSound(PApplet parent, int portNum) 
 	{
 		this.parent = parent;
+		this.connectionPort = portNum;
 		parent.registerDispose(this);
 		this.createConnection();
 	}
@@ -40,9 +41,9 @@ public class LinSound {
 			catch(IOException e){}	
 		}*/
         try {
-            Server = new ServerSocket (51000);
+            Server = new ServerSocket (connectionPort);
             } catch(Exception e) {}
-        System.out.println ("TCPServer Waiting for client on port 51000");
+        System.out.println ("TCPServer Waiting for client on port " + connectionPort);
  
     	try {
     		connected = Server.accept();
@@ -56,7 +57,7 @@ public class LinSound {
 		outToClient.println(toclient);
 	}
 	 
-	public PrintWriter getToServer() {
+	public PrintWriter getWriter() {
 		return outToClient;
 	}
 	
