@@ -48,6 +48,11 @@ int main(int argc, const char** argv)
      while(1)
      {
         bytes_recieved=recv(sock,recv_data,1024,0);
+	   if(bytes_recieved == 0) {
+	   	cout << "good bye!\n";
+		engine->drop();
+		exit(0);
+	   }
         recv_data[bytes_recieved] = '\0';
 	   dataIn = recv_data;
 	   printf("the data in: %s\n", recv_data);
