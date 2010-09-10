@@ -1,9 +1,10 @@
 import LinSound.*;
+
 void setup()
 {
-   size(800,600);
+   size(800 ,600);
    LinSound myEngine = new LinSound(this,6002);
-   MusicPlayer newSound = new MusicPlayer(myEngine, "fxnuabo.mp3");
+   MusicPlayer newSound = new MusicPlayer(myEngine, "ophelia.mp3");
    
 }
 
