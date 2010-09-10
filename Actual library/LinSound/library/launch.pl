@@ -7,4 +7,4 @@ print("$thePath");
 
 sleep(1);
 chdir("$thePath");
-system("xterm -hold -C -e ./SoundClient");
+system("./SoundClient");
