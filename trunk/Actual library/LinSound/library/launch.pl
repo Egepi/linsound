@@ -3,8 +3,7 @@ use warnings;
 use strict;
 
 my $thePath = $ARGV[0];
-print("$thePath");
+#my $thePort = $ARGV[1];
 
-sleep(1);
 chdir("$thePath");
 system("./SoundClient");
