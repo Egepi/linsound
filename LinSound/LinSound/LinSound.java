@@ -13,16 +13,18 @@ public class LinSound {
     private ServerSocket Server = null;
     private Socket connected = null;
     private int connectionPort = 51000;
-	
-	public LinSound(PApplet parent) {
+	private boolean ifHold;
+	public LinSound(PApplet parent, boolean holdValue) {
 		this.parent = parent;
+		this.ifHold = holdValue;
 		parent.registerDispose(this);
 		this.createConnection();
 	}
 
-	public LinSound(PApplet parent, int portNum) {
+	public LinSound(PApplet parent, int portNum, boolean holdValue) {
 		this.parent = parent;
 		this.connectionPort = portNum;
+		this.ifHold = holdValue;
 		parent.registerDispose(this);
 		this.createConnection();
 	}
@@ -35,8 +37,26 @@ public class LinSound {
 				} catch(IOException e){}			
 		} 
 		else {
+			String[] theP = new String[7];
 			String libraryDirectory = System.getProperty("user.home") +"/sketchbook/libraries/LinSound/library/";
-			String[] theP = {"xterm", "-e","perl",libraryDirectory + "launch.pl", libraryDirectory, Integer.toString(connectionPort)};
+			if(this.ifHold){
+				theP[0] = "xterm";
+				theP[1] = "-hold"; 
+				theP[2] = "-e";
+				theP[3] = "perl";
+				theP[4] = "" + libraryDirectory + "launch.pl";
+				theP[5] = "" + libraryDirectory;
+				theP[6] = Integer.toString(connectionPort);
+			}
+			else {
+				theP[0] = "xterm";
+				theP[1] = ""; 
+				theP[2] = "-e";
+				theP[3] = "perl";
+				theP[4] = "" + libraryDirectory + "launch.pl";
+				theP[5] = "" + libraryDirectory;
+				theP[6] = "" + Integer.toString(connectionPort);			
+			}
 			try {
 				Runtime.getRuntime().exec(theP);
 				} catch(IOException e){}	
