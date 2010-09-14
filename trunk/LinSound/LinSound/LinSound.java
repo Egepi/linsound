@@ -14,36 +14,32 @@ public class LinSound {
     private Socket connected = null;
     private int connectionPort = 51000;
 	
-	public LinSound(PApplet parent) 
-	{
+	public LinSound(PApplet parent) {
 		this.parent = parent;
 		parent.registerDispose(this);
 		this.createConnection();
 	}
 
-	public LinSound(PApplet parent, int portNum) 
-	{
+	public LinSound(PApplet parent, int portNum) {
 		this.parent = parent;
 		this.connectionPort = portNum;
 		parent.registerDispose(this);
 		this.createConnection();
 	}
 	
-	public void createConnection()
-	{
+	public void createConnection() {
 		String OS = System.getProperty("os.name");
 		if(OS.substring(0,0).equalsIgnoreCase("w")) {
 			try {
 				Runtime.getRuntime().exec("C:/Program Files/Google/Picasa3/Picasa3.exe");
-				}
-			catch(IOException e){}			
-		} else {
+				} catch(IOException e){}			
+		} 
+		else {
 			String libraryDirectory = System.getProperty("user.home") +"/sketchbook/libraries/LinSound/library/";
 			String[] theP = {"xterm", "-e","perl",libraryDirectory + "launch.pl", libraryDirectory, Integer.toString(connectionPort)};
 			try {
 				Runtime.getRuntime().exec(theP);
-				}
-			catch(IOException e){}	
+				} catch(IOException e){}	
 		}
 		
         try {
@@ -57,8 +53,7 @@ public class LinSound {
     		} catch(Exception e) {}  
 
 	}
-	public void stopEngine() 
-	{
+	public void stopEngine() {
 		String toclient = "drop\0";
 		outToClient.println(toclient);
 	}
@@ -67,8 +62,7 @@ public class LinSound {
 		return outToClient;
 	}
 	
-	public String getSketchPath()
-	{
+	public String getSketchPath() {
 		return parent.sketchPath;
 	}
 
