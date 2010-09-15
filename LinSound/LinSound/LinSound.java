@@ -37,9 +37,10 @@ public class LinSound {
 				} catch(IOException e){}			
 		} 
 		else {
-			String[] theP = new String[7];
+			
 			String libraryDirectory = System.getProperty("user.home") +"/sketchbook/libraries/LinSound/library/";
 			if(this.ifHold){
+				String[] theP = new String[7];
 				theP[0] = "xterm";
 				theP[1] = "-hold"; 
 				theP[2] = "-e";
@@ -47,19 +48,22 @@ public class LinSound {
 				theP[4] = "" + libraryDirectory + "launch.pl";
 				theP[5] = "" + libraryDirectory;
 				theP[6] = Integer.toString(connectionPort);
+				try {
+					Runtime.getRuntime().exec(theP);
+					} catch(IOException e){}
 			}
 			else {
+				String[] theP = new String[6];
 				theP[0] = "xterm";
-				theP[1] = ""; 
-				theP[2] = "-e";
-				theP[3] = "perl";
-				theP[4] = "" + libraryDirectory + "launch.pl";
-				theP[5] = "" + libraryDirectory;
-				theP[6] = "" + Integer.toString(connectionPort);			
-			}
-			try {
-				Runtime.getRuntime().exec(theP);
-				} catch(IOException e){}	
+				theP[1] = "-e";
+				theP[2] = "perl";
+				theP[3] = "" + libraryDirectory + "launch.pl";
+				theP[4] = "" + libraryDirectory;
+				theP[5] = "" + Integer.toString(connectionPort);			
+				try {
+					Runtime.getRuntime().exec(theP);
+					} catch(IOException e){}
+			}	
 		}
 		
         try {

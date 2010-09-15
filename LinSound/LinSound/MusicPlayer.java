@@ -8,7 +8,7 @@ public class MusicPlayer {
 	private PrintWriter writeTo;
 	public MusicPlayer(LinSound theSoundEngine, String soundName) {
 		this.soundEngine = theSoundEngine;
-		this.soundFile = soundEngine.getSketchPath() + "/data/" + this.soundFile;
+		this.soundFile = soundEngine.getSketchPath() + "/data/" + soundName;
 		this.writeTo = soundEngine.getWriter();
 		
 		String toclient = "create#" + this.soundFile + "\0"; 
