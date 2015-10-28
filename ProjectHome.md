@@ -1,0 +1,1 @@
+This library is a combination of c++ files as well as java/processing files in order to play sound on a linux machine. This is used because there is no good sound library for java for linux.
